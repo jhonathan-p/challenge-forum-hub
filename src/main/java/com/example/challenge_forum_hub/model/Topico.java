@@ -3,7 +3,6 @@ package com.example.challenge_forum_hub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "topicos")
@@ -23,7 +22,10 @@ public class Topico {
     private String dataCriacao;
     private String status;
     private String autor;
-    private String curso;
+
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
     @OneToMany(mappedBy = "topicoId")
     private List<Resposta> respostas;

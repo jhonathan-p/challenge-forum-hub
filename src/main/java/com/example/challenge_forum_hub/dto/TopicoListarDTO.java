@@ -1,5 +1,6 @@
 package com.example.challenge_forum_hub.dto;
 
+import com.example.challenge_forum_hub.model.Curso;
 import com.example.challenge_forum_hub.model.Topico;
 
 public record TopicoListarDTO(
@@ -14,7 +15,7 @@ public record TopicoListarDTO(
 
         String autor,
 
-        String curso) {
+        Curso curso) {
 
     public TopicoListarDTO(Topico topico){
         this(topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao(), topico.getStatus(), topico.getAutor(), topico.getCurso());

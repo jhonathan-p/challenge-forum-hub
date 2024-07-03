@@ -1,6 +1,7 @@
 package com.example.challenge_forum_hub.service;
 
 import com.example.challenge_forum_hub.dto.UsuarioNovoDTO;
+import com.example.challenge_forum_hub.model.Perfil;
 import com.example.challenge_forum_hub.model.Usuario;
 import com.example.challenge_forum_hub.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UsuarioService implements UserDetailsService {
         usuario.setNome(usuarioNovoDTO.nome());
         usuario.setEmail(usuarioNovoDTO.email());
         usuario.setSenha(passwordEncoder.encode(usuarioNovoDTO.senha()));
-//        usuario.setPerfil("user");
+        usuario.setPerfil(Perfil.USER);
         return usuarioRepository.save(usuario);
     }
 

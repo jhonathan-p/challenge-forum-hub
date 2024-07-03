@@ -3,6 +3,8 @@ package com.example.challenge_forum_hub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Table(name = "cursos")
 @Entity(name = "Curso")
 @Getter
@@ -17,5 +19,8 @@ public class Curso {
     private Long id;
     private String curso;
     private String categoria;
+
+    @OneToMany(mappedBy = "curso")
+    private List<Topico> topicos;
 
 }

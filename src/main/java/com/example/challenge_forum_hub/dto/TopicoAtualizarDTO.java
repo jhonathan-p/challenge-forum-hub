@@ -1,5 +1,6 @@
 package com.example.challenge_forum_hub.dto;
 
+import com.example.challenge_forum_hub.model.Curso;
 import com.example.challenge_forum_hub.model.Topico;
 
 public record TopicoAtualizarDTO(
@@ -10,7 +11,7 @@ public record TopicoAtualizarDTO(
 
         String autor,
 
-        String curso) {
+        Curso curso) {
 
     public TopicoAtualizarDTO(Topico topico) {
         this(topico.getTitulo(), topico.getMensagem(), topico.getAutor(), topico.getCurso());

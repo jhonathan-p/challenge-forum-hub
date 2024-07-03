@@ -1,5 +1,6 @@
 package com.example.challenge_forum_hub.dto;
 
+import com.example.challenge_forum_hub.model.Curso;
 import jakarta.validation.constraints.NotBlank;
 
 public record TopicoNovoDTO(
@@ -14,4 +15,4 @@ public record TopicoNovoDTO(
         String autor,
 
         @NotBlank
-        String curso) {}
+        Curso curso) {}

@@ -1,26 +1,3 @@
-create table topicos(
-    id bigint not null auto_increment,
-    titulo varchar(255) not null unique,
-    mensagem varchar(255) not null unique,
-    data_criacao varchar(255) not null,
-    status varchar(255) not null,
-    autor varchar(255) not null,
-    curso varchar(255) not null,
-    primary key(id)
-);
-
-create table respostas(
-    id bigint not null auto_increment,
-    topico_id bigint not null,
-    mensagem varchar(255) not null,
-    data_criacao varchar(255) not null,
-    autor varchar(255) not null,
-    solucao boolean not null default 0,
-    primary key(id),
-    foreign key(topico_id) references topicos(id) ON DELETE CASCADE,
-    unique (topico_id, mensagem)
-);
-
 create table usuarios(
     id bigint not null auto_increment,
     nome varchar(255) not null,
@@ -35,4 +12,28 @@ create table cursos(
     curso varchar(255) not null unique,
     categoria varchar(255) not null unique,
     primary key(id)
+);
+
+create table topicos(
+    id bigint not null auto_increment,
+    titulo varchar(255) not null unique,
+    mensagem varchar(255) not null unique,
+    data_criacao varchar(255) not null,
+    status varchar(255) not null,
+    autor varchar(255) not null,
+    curso_id bigint not null,
+    primary key(id),
+    foreign key(curso_id) references cursos(id)
+);
+
+create table respostas(
+    id bigint not null auto_increment,
+    topico_id bigint not null,
+    mensagem varchar(255) not null,
+    data_criacao varchar(255) not null,
+    autor varchar(255) not null,
+    solucao boolean not null default 0,
+    primary key(id),
+    foreign key(topico_id) references topicos(id) ON DELETE CASCADE,
+    unique (topico_id, mensagem)
 );
