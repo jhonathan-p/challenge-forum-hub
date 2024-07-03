@@ -3,7 +3,11 @@ package com.example.challenge_forum_hub.service;
 import com.example.challenge_forum_hub.dto.TopicoAtualizarDTO;
 import com.example.challenge_forum_hub.dto.TopicoListarDTO;
 import com.example.challenge_forum_hub.dto.TopicoNovoDTO;
+import com.example.challenge_forum_hub.model.Categoria;
+import com.example.challenge_forum_hub.model.Curso;
+import com.example.challenge_forum_hub.model.Status;
 import com.example.challenge_forum_hub.model.Topico;
+import com.example.challenge_forum_hub.repository.CursoRepository;
 import com.example.challenge_forum_hub.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,9 @@ public class TopicoService {
 
     @Autowired
     TopicoRepository topicoRepository;
+
+    @Autowired
+    CursoRepository cursoRepository;
 
     public List<TopicoListarDTO> topicoListarTodos() {
         var topicos = topicoRepository.findAll();
@@ -38,9 +45,18 @@ public class TopicoService {
         topico.setTitulo(topicoNovoDTO.titulo());
         topico.setMensagem(topicoNovoDTO.mensagem());
         topico.setDataCriacao(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-        topico.setStatus("Aberto");
+        topico.setStatus(Status.ABERTO);
         topico.setAutor(topicoNovoDTO.autor());
-        topico.setCurso(topicoNovoDTO.curso());
+        var curso = cursoRepository.findCursoByCurso(topicoNovoDTO.curso());
+        if (curso == null) {
+            var novoCurso = new Curso();
+            novoCurso.setCurso(topicoNovoDTO.curso());
+            novoCurso.setCategoria(Categoria.PROGRAMACAO);
+            cursoRepository.save(novoCurso);
+            topico.setCurso(novoCurso);
+        } else {
+            topico.setCurso(curso);
+        }
         return topicoRepository.save(topico);
     }
 
@@ -49,7 +65,19 @@ public class TopicoService {
         var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
         if (topicoAtualizarDTO.titulo() != null) topico.setTitulo(topicoAtualizarDTO.titulo());
         if (topicoAtualizarDTO.mensagem() != null) topico.setMensagem(topicoAtualizarDTO.mensagem());
-        if (topicoAtualizarDTO.curso() != null) topico.setCurso(topicoAtualizarDTO.curso());
+
+        if (topicoAtualizarDTO.curso() != null) {
+            var curso = cursoRepository.findCursoByCurso(topicoAtualizarDTO.curso());
+            if (curso == null) {
+                var novoCurso = new Curso();
+                novoCurso.setCurso(topicoAtualizarDTO.curso());
+                novoCurso.setCategoria(Categoria.PROGRAMACAO);
+                cursoRepository.save(novoCurso);
+                topico.setCurso(novoCurso);
+            } else {
+                topico.setCurso(curso);
+            }
+        }
         return new TopicoAtualizarDTO(topico);
     }
 

@@ -20,7 +20,8 @@ public class Topico {
     private String titulo;
     private String mensagem;
     private String dataCriacao;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private String autor;
 
     @ManyToOne

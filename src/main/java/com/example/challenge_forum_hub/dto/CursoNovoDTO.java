@@ -3,16 +3,10 @@ package com.example.challenge_forum_hub.dto;
 import com.example.challenge_forum_hub.model.Curso;
 import jakarta.validation.constraints.NotBlank;
 
-public record TopicoNovoDTO(
+public record CursoNovoDTO(
 
         @NotBlank
-        String titulo,
+        String curso/*,
 
         @NotBlank
-        String mensagem,
-
-        @NotBlank
-        String autor,
-
-        @NotBlank
-        String curso) {}
+        String categoria*/) {}

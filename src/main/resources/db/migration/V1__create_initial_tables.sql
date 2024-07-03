@@ -10,7 +10,7 @@ create table usuarios(
 create table cursos(
     id bigint not null auto_increment,
     curso varchar(255) not null unique,
-    categoria varchar(255) not null unique,
+    categoria enum('PROGRAMACAO') not null,
     primary key(id)
 );
 
@@ -19,7 +19,7 @@ create table topicos(
     titulo varchar(255) not null unique,
     mensagem varchar(255) not null unique,
     data_criacao varchar(255) not null,
-    status varchar(255) not null,
+    status enum('ABERTO', 'SOLUCIONADO') not null,
     autor varchar(255) not null,
     curso_id bigint not null,
     primary key(id),

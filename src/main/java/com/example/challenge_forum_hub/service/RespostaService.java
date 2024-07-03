@@ -4,6 +4,7 @@ import com.example.challenge_forum_hub.dto.RespostaAtualizarDTO;
 import com.example.challenge_forum_hub.dto.RespostaListarDTO;
 import com.example.challenge_forum_hub.dto.RespostaNovoDTO;
 import com.example.challenge_forum_hub.model.Resposta;
+import com.example.challenge_forum_hub.model.Status;
 import com.example.challenge_forum_hub.model.Topico;
 import com.example.challenge_forum_hub.repository.RespostaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class RespostaService {
 
     @Transactional
     public Resposta respostaNovo(Topico topicoId, RespostaNovoDTO respostaNovoDTO){
+        if (Status.SOLUCIONADO.equals(topicoId.getStatus())) {
+            throw new RuntimeException("Tópico já solucionado.");
+        }
         var resposta = new Resposta();
         resposta.setTopicoId(topicoId);
         resposta.setMensagem(respostaNovoDTO.mensagem());
@@ -64,5 +68,6 @@ public class RespostaService {
         }
         var resposta = respostaRepository.findByTopicoIdAndId(topicoId, id).orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
         resposta.setSolucao(true);
+        topicoId.setStatus(Status.SOLUCIONADO);
     }
 }
