@@ -3,6 +3,8 @@ package com.example.challenge_forum_hub.service;
 import com.example.challenge_forum_hub.dto.TopicoAtualizarDTO;
 import com.example.challenge_forum_hub.dto.TopicoListarDTO;
 import com.example.challenge_forum_hub.dto.TopicoNovoDTO;
+import com.example.challenge_forum_hub.infra.exception.Erro404Exception;
+import com.example.challenge_forum_hub.infra.exception.Erro409Exception;
 import com.example.challenge_forum_hub.model.Categoria;
 import com.example.challenge_forum_hub.model.Curso;
 import com.example.challenge_forum_hub.model.Status;
@@ -29,18 +31,20 @@ public class TopicoService {
 
     public List<TopicoListarDTO> topicoListarTodos() {
         var topicos = topicoRepository.findAll();
+        if (topicos.isEmpty()) throw new Erro404Exception("Nenhum tópico cadastrado.");
         return topicos.stream()
                 .map(TopicoListarDTO::new)
                 .collect(Collectors.toList());
     }
 
     public TopicoListarDTO topicoListar(Long id) {
-        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new Erro404Exception("Tópico não encontrado."));
         return new TopicoListarDTO(topico);
     }
 
     @Transactional
     public Topico topicoNovo(TopicoNovoDTO topicoNovoDTO){
+        if (topicoRepository.findTopicoByTitulo(topicoNovoDTO.titulo()) != null) throw new Erro409Exception("Tópico já cadastrado.");
         var topico = new Topico();
         topico.setTitulo(topicoNovoDTO.titulo());
         topico.setMensagem(topicoNovoDTO.mensagem());
@@ -62,10 +66,10 @@ public class TopicoService {
 
     @Transactional
     public TopicoAtualizarDTO topicoAtualizar(Long id, TopicoAtualizarDTO topicoAtualizarDTO) {
-        var topico = topicoRepository.findById(id).orElseThrow(() -> new RuntimeException("Tópico não encontrado."));
+        var topico = topicoRepository.findById(id).orElseThrow(() -> new Erro404Exception("Tópico não encontrado."));
         if (topicoAtualizarDTO.titulo() != null) topico.setTitulo(topicoAtualizarDTO.titulo());
         if (topicoAtualizarDTO.mensagem() != null) topico.setMensagem(topicoAtualizarDTO.mensagem());
-
+        if (topicoAtualizarDTO.autor() != null) topico.setAutor(topicoAtualizarDTO.autor()); //não acho correto atualizar o autor
         if (topicoAtualizarDTO.curso() != null) {
             var curso = cursoRepository.findCursoByCurso(topicoAtualizarDTO.curso());
             if (curso == null) {
@@ -86,7 +90,7 @@ public class TopicoService {
         var topico = topicoRepository.findById(id);
         if (topico.isPresent()) {
             topicoRepository.deleteById(id);
-        } else throw new RuntimeException("Tópico não encontrado.");
+        } else throw new Erro404Exception("Tópico não encontrado.");
     }
 
 }

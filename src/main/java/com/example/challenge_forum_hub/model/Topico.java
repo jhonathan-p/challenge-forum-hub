@@ -1,5 +1,7 @@
 package com.example.challenge_forum_hub.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +31,7 @@ public class Topico {
     private Curso curso;
 
     @OneToMany(mappedBy = "topicoId")
+    @JsonIgnore
     private List<Resposta> respostas;
 
 }

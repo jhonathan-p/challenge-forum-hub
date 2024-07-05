@@ -2,6 +2,7 @@ package com.example.challenge_forum_hub.controller;
 
 import com.example.challenge_forum_hub.dto.UsuarioLoginDTO;
 import com.example.challenge_forum_hub.dto.UsuarioNovoDTO;
+import com.example.challenge_forum_hub.dto.UsuarioRetornoDTO;
 import com.example.challenge_forum_hub.infra.security.TokenDTO;
 import com.example.challenge_forum_hub.infra.security.TokenService;
 import com.example.challenge_forum_hub.model.Usuario;
@@ -39,10 +40,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/novo")
-    @Transactional
     public ResponseEntity usuarioNovo(@RequestBody @Valid UsuarioNovoDTO usuarioNovoDTO) {
         Usuario usuario = usuarioService.usuarioNovo(usuarioNovoDTO);
-        return ResponseEntity.ok(usuario);
+        var retorno = new UsuarioRetornoDTO(usuario);
+        return ResponseEntity.ok(retorno);
     }
 
 }

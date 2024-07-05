@@ -1,6 +1,7 @@
 package com.example.challenge_forum_hub.service;
 
 import com.example.challenge_forum_hub.dto.UsuarioNovoDTO;
+import com.example.challenge_forum_hub.infra.exception.Erro409Exception;
 import com.example.challenge_forum_hub.model.Perfil;
 import com.example.challenge_forum_hub.model.Usuario;
 import com.example.challenge_forum_hub.repository.UsuarioRepository;
@@ -23,6 +24,9 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public Usuario usuarioNovo(UsuarioNovoDTO usuarioNovoDTO) {
+        if (usuarioRepository.findByEmail(usuarioNovoDTO.email()) != null) {
+            throw new Erro409Exception("Usuário já cadastrado.");
+        }
         Usuario usuario = new Usuario();
         usuario.setNome(usuarioNovoDTO.nome());
         usuario.setEmail(usuarioNovoDTO.email());
@@ -35,4 +39,5 @@ public class UsuarioService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return usuarioRepository.findByEmail(username);
     }
+
 }

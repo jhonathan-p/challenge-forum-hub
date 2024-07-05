@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
+
+    Topico findTopicoByTitulo(String titulo);
+
+    boolean existsTopicoByCursoId(Long id);
+
 }

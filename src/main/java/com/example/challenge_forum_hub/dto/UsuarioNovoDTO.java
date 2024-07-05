@@ -1,5 +1,6 @@
 package com.example.challenge_forum_hub.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record UsuarioNovoDTO(
@@ -8,6 +9,7 @@ public record UsuarioNovoDTO(
         String nome,
 
         @NotBlank
+        @Email
         String email,
 
         @NotBlank

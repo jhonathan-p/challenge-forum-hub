@@ -19,4 +19,6 @@ public interface RespostaRepository extends JpaRepository<Resposta, Long> {
 
     boolean existsByTopicoIdAndSolucao(Topico topicoId, boolean solucao);
 
+    Resposta findRespostaByTopicoIdAndMensagem(Topico topicoId, String mensagem);
+
 }
