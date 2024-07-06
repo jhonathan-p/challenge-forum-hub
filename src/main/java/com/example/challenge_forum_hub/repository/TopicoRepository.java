@@ -9,6 +9,10 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
     Topico findTopicoByTitulo(String titulo);
 
+    Topico findTopicoByMensagem(String mensagem);
+
     boolean existsTopicoByCursoId(Long id);
+
+    int countByCursoId(Long cursoId);
 
 }

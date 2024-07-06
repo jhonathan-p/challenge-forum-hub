@@ -1,22 +1,24 @@
 package com.example.challenge_forum_hub.dto;
 
-import com.example.challenge_forum_hub.model.Topico;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
 
 public record TopicoListarDTO(
+
+        Long id,
 
         String titulo,
 
         String mensagem,
 
-        String dataCriacao,
+        @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+        LocalDateTime dataCriacao,
 
         String status,
 
         String autor,
 
-        String curso) {
+        String curso,
 
-    public TopicoListarDTO(Topico topico){
-        this(topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao(), topico.getStatus().name(), topico.getAutor(), topico.getCurso().getCurso());
-    }
-}
+        int quantidadeRespostas) {}

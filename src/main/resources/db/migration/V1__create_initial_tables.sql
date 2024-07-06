@@ -17,8 +17,8 @@ create table cursos(
 create table topicos(
     id bigint not null auto_increment,
     titulo varchar(255) not null unique,
-    mensagem varchar(255) not null unique,
-    data_criacao varchar(255) not null,
+    mensagem varchar(512) not null unique,
+    data_criacao timestamp not null,
     status enum('ABERTO', 'SOLUCIONADO') not null,
     autor varchar(255) not null,
     curso_id bigint not null,
@@ -29,8 +29,8 @@ create table topicos(
 create table respostas(
     id bigint not null auto_increment,
     topico_id bigint not null,
-    mensagem varchar(255) not null,
-    data_criacao varchar(255) not null,
+    mensagem varchar(512) not null,
+    data_criacao timestamp not null,
     autor varchar(255) not null,
     solucao boolean not null default 0,
     primary key(id),

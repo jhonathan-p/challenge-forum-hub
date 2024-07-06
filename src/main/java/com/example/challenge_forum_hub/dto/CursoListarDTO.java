@@ -1,15 +1,13 @@
 package com.example.challenge_forum_hub.dto;
 
 import com.example.challenge_forum_hub.model.Categoria;
-import com.example.challenge_forum_hub.model.Curso;
 
 public record CursoListarDTO(
 
+        Long id,
+
         String curso,
 
-        Categoria categoria) {
+        Categoria categoria,
 
-    public CursoListarDTO(Curso curso){
-        this(curso.getCurso(), curso.getCategoria());
-    }
-}
+        int quantidadeTopicos) {}

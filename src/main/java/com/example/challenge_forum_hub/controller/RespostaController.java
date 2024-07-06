@@ -7,6 +7,8 @@ import com.example.challenge_forum_hub.service.RespostaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,9 @@ public class RespostaController {
     RespostaService respostaService;
 
     @GetMapping()
-    public ResponseEntity respostaListarTodos(@PathVariable Long topicoId){
-        var respostas = respostaService.respostaListarTodos(topicoId);
-        return ResponseEntity.ok(respostas);
+    public ResponseEntity respostaListarTodos(@PageableDefault(size = 10, sort = {"dataCriacao"}) Pageable pageable, @PathVariable Long topicoId){
+        var page = respostaService.respostaListarTodos(pageable, topicoId);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +43,7 @@ public class RespostaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity respostaAtualizar(@PathVariable Long topicoId, @PathVariable Long id, @RequestBody RespostaAtualizarDTO respostaAtualizarDTO){
+    public ResponseEntity respostaAtualizar(@PathVariable Long topicoId, @PathVariable Long id, @RequestBody @Valid RespostaAtualizarDTO respostaAtualizarDTO){
         var resposta = respostaService.respostaAtualizar(topicoId, id, respostaAtualizarDTO);
         return ResponseEntity.ok(resposta);
     }

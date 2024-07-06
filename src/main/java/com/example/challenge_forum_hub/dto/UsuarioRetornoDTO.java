@@ -9,6 +9,7 @@ public record UsuarioRetornoDTO(
         String login) {
 
     public UsuarioRetornoDTO(Usuario usuario){
-        this(usuario.getNome(), usuario.getUsername());
+        this(usuario.getNome(),
+                usuario.getUsername());
     }
 }

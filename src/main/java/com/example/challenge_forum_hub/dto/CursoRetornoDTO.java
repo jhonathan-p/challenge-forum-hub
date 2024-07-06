@@ -12,6 +12,8 @@ public record CursoRetornoDTO(
         Categoria categoria) {
 
     public CursoRetornoDTO(Curso curso){
-        this(curso.getId(), curso.getCurso(), curso.getCategoria());
+        this(curso.getId(),
+                curso.getCurso(),
+                curso.getCategoria());
     }
 }

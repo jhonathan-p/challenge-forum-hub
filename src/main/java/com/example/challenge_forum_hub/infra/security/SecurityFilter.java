@@ -2,6 +2,7 @@ package com.example.challenge_forum_hub.infra.security;
 
 import com.example.challenge_forum_hub.infra.exception.Erro400Exception;
 import com.example.challenge_forum_hub.infra.exception.Erro401Exception;
+import com.example.challenge_forum_hub.infra.exception.Erro404Exception;
 import com.example.challenge_forum_hub.infra.exception.Erro500Exception;
 import com.example.challenge_forum_hub.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -39,6 +40,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             var tokenJWT = recuperarToken(request);
             var subject = tokenService.getSubject(tokenJWT);
             var usuario = usuarioRepository.findByEmail(subject);
+            if (usuario == null) throw new Erro401Exception("Token inválido.");
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);

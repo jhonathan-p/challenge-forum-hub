@@ -7,6 +7,8 @@ import com.example.challenge_forum_hub.service.CursoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,9 @@ public class CursoController {
     CursoService cursoService;
 
     @GetMapping()
-    public ResponseEntity cursoListarTodos(){
-        var cursos = cursoService.cursoListarTodos();
-        return ResponseEntity.ok(cursos);
+    public ResponseEntity cursoListarTodos(@PageableDefault(size = 10, sort = {"curso"}) Pageable pageable){
+        var page = cursoService.cursoListarTodos(pageable);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +43,7 @@ public class CursoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity cursoAtualizar(@PathVariable Long id, @RequestBody CursoAtualizarDTO cursoAtualizarDTO){
+    public ResponseEntity cursoAtualizar(@PathVariable Long id, @RequestBody @Valid CursoAtualizarDTO cursoAtualizarDTO){
         var curso = cursoService.cursoAtualizar(id, cursoAtualizarDTO);
         return ResponseEntity.ok(curso);
     }

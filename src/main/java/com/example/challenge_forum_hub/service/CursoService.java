@@ -10,6 +10,7 @@ import com.example.challenge_forum_hub.model.Curso;
 import com.example.challenge_forum_hub.repository.CursoRepository;
 import com.example.challenge_forum_hub.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +26,21 @@ public class CursoService {
     @Autowired
     TopicoRepository topicoRepository;
 
-    public List<CursoListarDTO> cursoListarTodos() {
-        var cursos = cursoRepository.findAll();
+    public List<CursoListarDTO> cursoListarTodos(Pageable pageable) {
+        var cursos = cursoRepository.findAll(pageable);
         if (cursos.isEmpty()) throw new Erro404Exception("Nenhum curso cadastrado.");
         return cursos.stream()
-                .map(CursoListarDTO::new)
+                .map(curso -> {
+                    int quantidadeTopicos = topicoRepository.countByCursoId(curso.getId());
+                    return new CursoListarDTO(curso.getId(), curso.getCurso(), curso.getCategoria(), quantidadeTopicos);
+                })
                 .collect(Collectors.toList());
     }
 
     public CursoListarDTO cursoListar(Long id) {
         var curso = cursoRepository.findById(id).orElseThrow(() -> new Erro404Exception("Curso não encontrado."));
-        return new CursoListarDTO(curso);
+        int quantidadeTopicos = topicoRepository.countByCursoId(curso.getId());
+        return new CursoListarDTO(curso.getId(), curso.getCurso(), curso.getCategoria(), quantidadeTopicos);
     }
 
     @Transactional
@@ -50,6 +55,7 @@ public class CursoService {
     @Transactional
     public CursoAtualizarDTO cursoAtualizar(Long id, CursoAtualizarDTO cursoAtualizarDTO) {
         var curso = cursoRepository.findById(id).orElseThrow(() -> new Erro404Exception("Curso não encontrado."));
+        if (topicoRepository.existsTopicoByCursoId(id)) throw new Erro409Exception("Não é possível modificar cursos que possuem tópicos cadastrados.");
         if (cursoAtualizarDTO.curso() != null) curso.setCurso(cursoAtualizarDTO.curso());
         return new CursoAtualizarDTO(curso);
     }

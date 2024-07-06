@@ -1,14 +1,18 @@
 package com.example.challenge_forum_hub.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 public class TratadorDeErros {
@@ -57,6 +61,27 @@ public class TratadorDeErros {
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity tratarErroLogin(InternalAuthenticationServiceException ex){
         return ResponseEntity.badRequest().body("Usuário inexistente ou senha inválida.");
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity tratarErroUrl(MethodArgumentTypeMismatchException ex){
+        return ResponseEntity.badRequest().body("Verifique se a URL foi digitada corretamente.");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity tratarErroUrl(NoResourceFoundException ex){
+        return ResponseEntity.badRequest().body("Verifique se a URL foi digitada corretamente.");
+    }
+
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity tratarErroMetodoNaoSuportado(HttpRequestMethodNotSupportedException ex){
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Método não suportado.");
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity tratarErroPageableSort(PropertyReferenceException ex){
+        return ResponseEntity.badRequest().body("Verifique se o sort está sendo feito corretamente para o endpoint em específico. Exemplos: 'dataCriacao' ou 'curso'.");
     }
 
     @ExceptionHandler(Exception.class)

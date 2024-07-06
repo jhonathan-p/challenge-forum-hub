@@ -7,6 +7,8 @@ import com.example.challenge_forum_hub.service.TopicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,9 @@ public class TopicoController {
     TopicoService topicoService;
 
     @GetMapping()
-    public ResponseEntity topicoListarTodos(){
-        var topicos = topicoService.topicoListarTodos();
-        return ResponseEntity.ok(topicos);
+    public ResponseEntity topicoListarTodos(@PageableDefault(size = 10, sort = {"dataCriacao"}) Pageable pageable){
+        var page = topicoService.topicoListarTodos(pageable);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +43,7 @@ public class TopicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity topicoAtualizar(@PathVariable Long id, @RequestBody TopicoAtualizarDTO topicoAtualizarDTO){
+    public ResponseEntity topicoAtualizar(@PathVariable Long id, @RequestBody @Valid TopicoAtualizarDTO topicoAtualizarDTO){
         var topico = topicoService.topicoAtualizar(id, topicoAtualizarDTO);
         return ResponseEntity.ok(topico);
     }
