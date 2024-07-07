@@ -79,7 +79,7 @@ spring.datasource.password=sua_senha
 ```
 
 ## Utilizando a Documentação Swagger
-Acesse a documentação da API Swagger em http://localhost:8080/swagger-ui.html. Você pode usar esta interface para testar os endpoints da API.
+Com a aplicação em execução, acesse a documentação em http://localhost:8080/swagger-ui.html. Você pode usar esta interface para testar os endpoints da API.
 
 ### Endpoints Principais
 
