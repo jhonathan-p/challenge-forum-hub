@@ -15,6 +15,28 @@ Este projeto é uma API RESTful desenvolvida para um fórum de discussão, onde 
 - **Gerenciamento de Cursos**: Criação, atualização, listagem e exclusão de cursos.
 - **Documentação da API**: Utilização do Swagger para documentar e testar os endpoints da API.
 
+## Restrições e Comportamentos da API
+
+### Usuários
+
+- As senhas dos usuários são armazenadas de forma criptografada no banco de dados.
+
+### Tópicos
+
+- Não é possível adicionar tópicos e mensagens duplicadas.
+- Ao enviar na requisição um curso não cadastrado, o curso é automaticamente criado.
+- Ao marcar uma resposta como solução, o tópico é considerado solucionado e não permite mais alterações.
+- Ao excluir um tópico, mesmo que já solucionado, todas as respostas são automaticamente excluidas.
+
+### Respostas
+
+- Não é possível adicionar respostas duplicadas para um mesmo tópico, para outros tópicos é permitido.
+- Não é possível modificar ou excluir respostas de um tópico já solucionado.
+
+### Cursos
+
+- Não é possível modificar ou excluir cursos que possuem tópicos cadastrados relacionados.
+
 ## Como Utilizar
 
 ### Recomendações
@@ -39,6 +61,12 @@ As dependências abaixo são automaticamente gerenciadas pelo Maven:
 - **Spring Security**: Autenticação e autorização de segurança.
 - **Auth0**: Implementação de JWT para autenticação.
 - **springdoc**: Documentação da API com OpenAPI e Swagger.
+
+### Clone o repositório e abra na IDE.
+
+   ```
+   git clone https://github.com/jhonathan-p/challenge-forum-hub.git
+   ```
 
 ### Configuração do Banco de Dados
 
@@ -92,6 +120,7 @@ Acesse a documentação da API Swagger em http://localhost:8080/swagger-ui.html.
 Para obter ajuda sobre o projeto, você pode:
 
 - Consultar a documentação do Swagger.
+- O projeto está configurado para retornar mensagens claras de erro para facilitar a identificação e resolução dos problemas.
 - Enviar uma mensagem através do perfil do autor no GitHub.
 
 ## Autores

@@ -72,6 +72,9 @@ public class RespostaService {
     @Transactional
     public void respostaDeletar(Long topicoId, Long id) {
         var topico = topicoRepository.findById(topicoId).orElseThrow(() -> new Erro404Exception("Tópico não encontrado."));
+        if (Status.SOLUCIONADO.equals(topico.getStatus())) {
+            throw new Erro409Exception("Não é possível deletar respostas de um tópico já solucionado.");
+        }
         var resposta = respostaRepository.findByTopicoIdAndId(topico, id).orElseThrow(() -> new Erro404Exception("Resposta não encontrada para esse tópico."));
         respostaRepository.deleteByTopicoIdAndId(topico, id);
     }
